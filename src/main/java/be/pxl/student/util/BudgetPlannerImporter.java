@@ -12,7 +12,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -24,8 +26,11 @@ public class BudgetPlannerImporter {
     public static final Path PATH = Paths.get("src/main/resources/");
 
     public static Set<Account> readFile(String fileName) {
+        //LogManager.getLogManager().reset(); //reset root log manager handlers
         Set<Account> accountsSet = new HashSet<>();
         try (BufferedReader reader = Files.newBufferedReader(PATH.resolve(fileName))) {
+            FileHandler fh = new FileHandler("src/main/resources/budget_planner_importer.log", true);
+            LOGGER.addHandler(fh);
             String line;
             //reader.readLine(); //first line is skipped
             while ((line = reader.readLine()) != null) {
